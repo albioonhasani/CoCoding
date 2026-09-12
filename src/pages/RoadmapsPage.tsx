@@ -1,0 +1,11 @@
+import { useState } from 'react'
+import { Search } from 'lucide-react'
+import { RoadmapCard } from '@/components/RoadmapCard'
+import { Input } from '@/components/ui/Input'
+import { SectionHeader } from '@/components/ui/SectionHeader'
+import { Select } from '@/components/ui/Select'
+import { roadmaps } from '@/data/roadmaps'
+import { useRoadmapProgress } from '@/hooks/useRoadmapProgress'
+
+export function RoadmapsPage() { const [query, setQuery] = useState(''); const [category, setCategory] = useState('All'); const categories = ['All', ...new Set(roadmaps.map((roadmap) => roadmap.category))]; const filtered = roadmaps.filter((roadmap) => (category === 'All' || roadmap.category === category) && `${roadmap.title} ${roadmap.description}`.toLowerCase().includes(query.toLowerCase())); return <div><SectionHeader eyebrow="Your learning paths" title="Roadmaps made for momentum" description="Follow an intentional sequence, practice each concept, and always know what comes next." /><div className="mt-8 grid gap-3 sm:grid-cols-[1fr_15rem]"><div className="relative"><label htmlFor="roadmap-search" className="sr-only">Search roadmaps</label><Search className="pointer-events-none absolute left-3 top-3 text-slate-400" size={19} aria-hidden="true" /><Input id="roadmap-search" className="pl-10" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search learning paths" /></div><div><label htmlFor="roadmap-category" className="sr-only">Filter roadmaps by category</label><Select id="roadmap-category" value={category} onChange={(event) => setCategory(event.target.value)}>{categories.map((item) => <option key={item}>{item}</option>)}</Select></div></div><p className="mt-5 text-sm text-slate-600 dark:text-slate-300" aria-live="polite">{filtered.length} learning {filtered.length === 1 ? 'path' : 'paths'} available</p><div className="mt-5 grid gap-6 md:grid-cols-2 xl:grid-cols-3">{filtered.map((roadmap) => <RoadmapListCard key={roadmap.id} roadmapId={roadmap.id} />)}</div></div> }
+function RoadmapListCard({ roadmapId }: { roadmapId: string }) { const roadmap = roadmaps.find((item) => item.id === roadmapId)!; const { progress } = useRoadmapProgress(roadmap.id, roadmap.steps.map((step) => step.id)); return <RoadmapCard roadmap={roadmap} progress={progress} /> }
