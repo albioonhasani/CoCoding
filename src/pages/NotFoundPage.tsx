@@ -1,0 +1,2 @@
+import { Link } from 'react-router-dom'
+export function NotFoundPage() { return <main className="grid min-h-screen place-items-center bg-slate-50 p-6 text-center dark:bg-slate-950"><div><p className="text-sm font-bold text-brand-700 dark:text-blue-300">404</p><h1 className="mt-2 text-3xl font-bold text-ink dark:text-white">Page not found</h1><p className="mt-3 text-slate-600 dark:text-slate-300">That learning path does not exist.</p><Link className="mt-6 inline-block rounded-lg bg-brand-600 px-4 py-2 font-semibold text-white" to="/">Back to dashboard</Link></div></main> }

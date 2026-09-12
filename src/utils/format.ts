@@ -1,0 +1,1 @@
+export function formatLearningTime(minutes: number) { const hours = Math.floor(minutes / 60); const remainder = minutes % 60; return hours === 0 ? `${minutes} min` : remainder === 0 ? `${hours} hr` : `${hours} hr ${remainder} min` }

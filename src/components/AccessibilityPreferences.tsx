@@ -1,0 +1,17 @@
+import { Accessibility, X } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { useLocalStorage } from '@/hooks/useLocalStorage'
+
+type Preferences = { fontSize: 'default' | 'large' | 'extra-large'; highContrast: boolean; reducedMotion: boolean }
+const defaults: Preferences = { fontSize: 'default', highContrast: false, reducedMotion: false }
+
+export function AccessibilityPreferences() {
+  const [open, setOpen] = useState(false)
+  const [preferences, setPreferences] = useLocalStorage<Preferences>('codepath-accessibility', defaults)
+  const trigger = useRef<HTMLButtonElement>(null)
+  const close = useRef<HTMLButtonElement>(null)
+  useEffect(() => { const root = document.documentElement; root.classList.toggle('high-contrast', preferences.highContrast); root.classList.toggle('reduce-motion', preferences.reducedMotion); root.dataset.fontSize = preferences.fontSize }, [preferences])
+  useEffect(() => { if (!open) return; const triggerElement = trigger.current; close.current?.focus(); const keydown = (event: KeyboardEvent) => { if (event.key === 'Escape') { event.preventDefault(); setOpen(false) } }; window.addEventListener('keydown', keydown); return () => { window.removeEventListener('keydown', keydown); triggerElement?.focus() } }, [open])
+  const update = <K extends keyof Preferences>(key: K, value: Preferences[K]) => setPreferences({ ...preferences, [key]: value })
+  return <div className="relative"><button ref={trigger} type="button" onClick={() => setOpen((value) => !value)} aria-expanded={open} aria-controls="accessibility-settings" className="min-h-11 min-w-11 rounded-lg p-2 text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800" aria-label="Accessibility preferences"><Accessibility size={19} aria-hidden="true" /></button>{open && <section id="accessibility-settings" role="dialog" aria-modal="false" aria-labelledby="accessibility-settings-title" className="absolute right-0 top-11 z-50 w-72 rounded-2xl border border-slate-200 bg-white p-4 shadow-xl dark:border-slate-700 dark:bg-slate-900"><div className="flex items-center justify-between"><h2 id="accessibility-settings-title" className="font-bold text-ink dark:text-white">Reading preferences</h2><button ref={close} type="button" onClick={() => setOpen(false)} className="min-h-11 min-w-11 rounded-lg p-1 text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800" aria-label="Close accessibility preferences"><X size={18} aria-hidden="true" /></button></div><label className="mt-4 grid gap-2 text-sm font-semibold text-ink dark:text-white"><span>Font size</span><select value={preferences.fontSize} onChange={(event) => update('fontSize', event.target.value as Preferences['fontSize'])}><option value="default">Default</option><option value="large">Large</option><option value="extra-large">Extra large</option></select></label><label className="mt-4 flex items-center justify-between gap-3 text-sm font-semibold text-ink dark:text-white"><span>High contrast</span><input type="checkbox" checked={preferences.highContrast} onChange={(event) => update('highContrast', event.target.checked)} /></label><label className="mt-4 flex items-center justify-between gap-3 text-sm font-semibold text-ink dark:text-white"><span>Reduce motion</span><input type="checkbox" checked={preferences.reducedMotion} onChange={(event) => update('reducedMotion', event.target.checked)} /></label></section>}</div>
+}
