@@ -38,7 +38,7 @@ npm run build
 
 ## Deployment and security
 
-`api/challenge.ts`, `api/hint.ts`, and `api/feedback.ts` are Vercel serverless functions for production deployments. Configure `GROQ_API_KEY` (and optionally `GROQ_MODEL`) in your host's server environment; do not expose it as a `VITE_` variable. The browser calls only same-origin API endpoints.
+`api/challenge.ts`, `api/hint.ts`, `api/feedback.ts`, and `api/explain.ts` are Vercel serverless functions for production deployments. Configure `GROQ_API_KEY` (and optionally `GROQ_MODEL`) in your host's server environment for Development, Preview, and Production as needed; do not expose it as a `VITE_` variable. The browser calls only same-origin API endpoints.
 
 The endpoints accept only `POST` requests, enforce JSON and size limits, validate allowed languages/topics/difficulties, bound code submissions, and validate structured AI output before returning it. They also apply a small in-memory server-instance rate limit. For a public production launch, add platform-level distributed rate limiting appropriate to expected traffic.
 
