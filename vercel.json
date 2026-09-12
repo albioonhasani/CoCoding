@@ -8,5 +8,12 @@
       "includeFiles": "server/ai/**",
       "maxDuration": 30
     }
-  }
+  },
+  "rewrites": [
+    { "source": "/challenges", "destination": "/index.html" },
+    { "source": "/roadmaps", "destination": "/index.html" },
+    { "source": "/roadmaps/:roadmapId", "destination": "/index.html" },
+    { "source": "/resources", "destination": "/index.html" },
+    { "source": "/progress", "destination": "/index.html" }
+  ]
 }
