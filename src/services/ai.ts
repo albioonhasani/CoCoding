@@ -5,7 +5,7 @@ export class AIClientError extends Error {
     super(message)
   }
 }
-const aiErrorCodes = new Set(['MISSING_GROQ_API_KEY', 'GROQ_AUTH_FAILED', 'GROQ_RATE_LIMITED', 'GROQ_UPSTREAM_ERROR', 'GROQ_TIMEOUT', 'GROQ_MALFORMED_RESPONSE', 'AI_MALFORMED_RESPONSE'])
+const aiErrorCodes = new Set(['MISSING_GROQ_API_KEY', 'GROQ_AUTH_FAILED', 'GROQ_RATE_LIMITED', 'GROQ_UPSTREAM_ERROR', 'GROQ_TIMEOUT', 'GROQ_MALFORMED_RESPONSE', 'AI_MALFORMED_RESPONSE', 'API_MODULE_LOAD_FAILED', 'UNEXPECTED_SERVER_ERROR'])
 async function diagnoseApiReachability(status: number) {
   try {
     const health = await fetch('/api/health', { method: 'GET', headers: { Accept: 'application/json' }, cache: 'no-store' })
