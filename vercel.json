@@ -5,6 +5,7 @@
   "outputDirectory": "dist",
   "functions": {
     "api/**/*.ts": {
+      "includeFiles": "server/ai/**",
       "maxDuration": 30
     }
   }
